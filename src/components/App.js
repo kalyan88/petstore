@@ -9,7 +9,7 @@ function App() {
          <div className="row">
            <div className="col-md-12 bg-white">
              <div className="container">
-               <div>Add Appointment</div>
+               <div>Add Appointment test</div>
                <div>Search Appointment</div>
                <div>List Appointment</div>
              </div>
