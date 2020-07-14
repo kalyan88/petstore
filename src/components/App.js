@@ -27,6 +27,19 @@ class App extends Component {
   }
 
   render() {
+
+    const appointments = this.state.myAppointments.map(
+      apt => (
+        <div key={apt.aptDate}>
+            <div><b>{apt.petName}</b></div>
+            <div><b>{apt.ownerName}</b></div>
+            <div>{apt.aptNotes}</div>
+            <div>{apt.aptDate}</div>
+        </div>
+      )
+    )
+
+
     return (
       <div className="App">
         <main className="page bg-white" id="petratings">
@@ -34,7 +47,7 @@ class App extends Component {
            <div className="row">
              <div className="col-md-12 bg-white">
                <div className="container">
-                 {this.state.name}
+                  {appointments}
                  <AddAppointments />
                  <ListAppointments />
                  <SearchAppointments />
