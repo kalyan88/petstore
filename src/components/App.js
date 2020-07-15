@@ -9,7 +9,8 @@ class App extends Component {
     super();
     this.state = {
       name : 'Nikhil',
-      myAppointments: []
+      myAppointments: [],
+      lastIndex: 0
     }
   }
 
@@ -18,6 +19,8 @@ class App extends Component {
            .then(response =>response.json())
            .then(result => {
                const appointments = result.map(item => {
+                   item.aptId = this.state.lastIndex;
+                   this.setState({lastIndex: this.state.lastIndex+1})
                    return item;
                  })
                  this.setState({
@@ -27,19 +30,6 @@ class App extends Component {
   }
 
   render() {
-
-    const appointments = this.state.myAppointments.map(
-      apt => (
-        <div key={apt.aptDate}>
-            <div><b>{apt.petName}</b></div>
-            <div><b>{apt.ownerName}</b></div>
-            <div>{apt.aptNotes}</div>
-            <div>{apt.aptDate}</div>
-        </div>
-      )
-    )
-
-
     return (
       <div className="App">
         <main className="page bg-white" id="petratings">
@@ -47,9 +37,8 @@ class App extends Component {
            <div className="row">
              <div className="col-md-12 bg-white">
                <div className="container">
-                  {appointments}
                  <AddAppointments />
-                 <ListAppointments />
+                 <ListAppointments appointments={this.state.myAppointments}/>
                  <SearchAppointments />
                </div>
              </div>
