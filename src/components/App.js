@@ -9,11 +9,13 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      name : 'Nikhil',
-      myAppointments: [],
-      lastIndex: 0
-    };
+                    name : 'Nikhil',      
+                    myAppointments: [],      
+                    lastIndex: 0,
+                    formDisplay: false
+                  };
     this.deleteAppoitnment = this.deleteAppoitnment.bind(this);
+    this.toggleForm = this.toggleForm.bind(this);
   }
 
   deleteAppoitnment(apt) {
@@ -23,6 +25,14 @@ class App extends Component {
         {
           myAppointments: tempApt
         }
+    )
+  }
+
+  toggleForm() {
+    this.setState(
+      {
+        formDisplay:!this.state.formDisplay
+      }
     )
   }
 
@@ -49,7 +59,8 @@ class App extends Component {
            <div className="row">
              <div className="col-md-12 bg-white">
                <div className="container">
-                 <AddAppointments />
+                 <AddAppointments formDisplay={this.state.formDisplay}
+                                  toggleForm={this.toggleForm}/>
                  <ListAppointments appointments={this.state.myAppointments}
                                    deleteAppoitnment= {this.deleteAppoitnment}/>
                  <SearchAppointments />
