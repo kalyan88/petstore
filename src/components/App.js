@@ -8,8 +8,9 @@ import { without } from 'lodash';
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-                    name : 'Nikhil',      
+    this.state = {  
+                    orderBy: 'petName',
+                    orderDir: 'asc',
                     myAppointments: [],      
                     lastIndex: 0,
                     formDisplay: false
@@ -17,7 +18,7 @@ class App extends Component {
     this.deleteAppoitnment = this.deleteAppoitnment.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
     this.addAppointment = this.addAppointment.bind(this);
-    
+    this.changeOrder = this.changeOrder.bind(this);
   }
 
   deleteAppoitnment(apt) {
@@ -50,6 +51,13 @@ class App extends Component {
     )
 
   }
+  changeOrder(order, dir) {
+    this.setState(
+      {
+        orderBy:order,
+        orderDir: dir
+      })
+  }
 
   componentDidMount() {
     fetch('./data.json')
@@ -66,6 +74,19 @@ class App extends Component {
            });
   }
   render() {
+    let order;
+    let filteredApts = this.state.myAppointments;
+     if(this.state.orderDir === 'asc') {
+       order =1; // to show Ascending order
+     } else {
+       order = -1;// to show decending order
+     }
+     filteredApts.sort((a,b) => {
+       if(a[this.state.orderBy].toLowerCase() < b[this.state.orderBy].toLowerCase()){
+                 return -1* order;
+               } else{  return 1* order }
+     })
+
     return (
       <div className="App">
         <main className="page bg-white" id="petratings">
@@ -77,9 +98,12 @@ class App extends Component {
                                   toggleForm={this.toggleForm}
                                   addAppointment={this.addAppointment}
                                     />
-                 <ListAppointments appointments={this.state.myAppointments}
-                                   deleteAppoitnment= {this.deleteAppoitnment}/>
-                 <SearchAppointments />
+                 <ListAppointments appointments={filteredApts}
+                                   deleteAppoitnment= {this.deleteAppoitnment}
+                                   />
+                 <SearchAppointments changeOrder={this.changeOrder}
+                                      orderBy={this.state.orderBy}
+                                      orderDir={this.state.orderDir}/>
                </div>
              </div>
            </div>
