@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../css/App.css';
 import AddAppointments from './AddAppointments';
-import ListAppointments from './ListAppointments'
-import SearchAppointments from './SearchAppointments'
+import ListAppointments from './ListAppointments';
+import SearchAppointments from './SearchAppointments';
 import { without, findIndex } from 'lodash';
 
 class App extends Component {
@@ -24,22 +24,25 @@ class App extends Component {
     this.updateInfo = this.updateInfo.bind(this);
   }
 
-  deleteAppoitnment(apt) {
-    let tempApt = this.state.myAppointments;
-    tempApt = without(tempApt, apt)
-    this.setState(
-        {
-          myAppointments: tempApt
-        }
-    )
-  }
-
   toggleForm() {
     this.setState(
       {
         formDisplay:!this.state.formDisplay
       }
     )
+  }
+
+  updateInfo(name, value, id) {
+    let tempApts = this.state.myAppointments;
+    let aptIndex = findIndex(this.state.myAppointments, {
+      aptId: id
+    });
+
+    tempApts[aptIndex][name] = value;
+    this.setState({
+      myAppointments: tempApts
+    });
+
   }
 
   addAppointment(apt) { 
@@ -54,6 +57,17 @@ class App extends Component {
     )
 
   }
+
+  deleteAppoitnment(apt) {
+    let tempApt = this.state.myAppointments;
+    tempApt = without(tempApt, apt)
+    this.setState(
+        {
+          myAppointments: tempApt
+        }
+    )
+  }
+
   changeOrder(order, dir) {
     this.setState(
       {
@@ -67,18 +81,6 @@ class App extends Component {
     this.setState({
       queryText: query
     })
-  }
-  updateInfo(name, value, id) {
-    let tempApts = this.state.myAppointments;
-    let aptIndex = findIndex(this.state.myAppointments, {
-      aptId: id
-    });
-
-    tempApts[aptIndex][name] = value;
-    this.setState({
-      myAppointments: tempApts
-    });
-
   }
 
   componentDidMount() {
@@ -95,6 +97,7 @@ class App extends Component {
                  });
            });
   }
+
   render() {
     let order;
     let filteredApts = this.state.myAppointments;
@@ -120,7 +123,7 @@ class App extends Component {
               .toLowerCase()
               .includes(this.state.queryText.toLowerCase())
           )
-     })
+     });
 
     return (
       <div className="App">
@@ -142,7 +145,6 @@ class App extends Component {
                                    deleteAppoitnment= {this.deleteAppoitnment}
                                    updateInfo={this.updateInfo}
                                    />
-                 
                </div>
              </div>
            </div>
