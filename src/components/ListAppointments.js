@@ -18,7 +18,12 @@ class ListAppointments extends Component {
 
                    <div className="pet-info media-body">
                        <div className="pet-head d-flex">
-                           <span className="pet-name" >{item.petName}</span>
+                           <span className="pet-name" 
+                                        contentEditable
+                                        suppressContentEditableWarning
+                                        onBlur ={
+                                            e=> this.props.updateInfo('petName', e.target.innerText, item.aptId)
+                                        }>{item.petName}</span>
                            <span className="apt-date ml-auto" >
                                <Moment date={item.aptDate} 
                                        parse="YYYY-MM-dd hh:mm"
